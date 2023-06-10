@@ -1,0 +1,646 @@
+--لا تسرق والله تعبت---
+---lolwtimew
+--f5
+---
+---
+---
+---
+---
+---
+--
+---
+---
+--
+---
+---
+---
+--
+
+
+
+
+
+
+
+
+
+
+
+--
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--// ANTI-KICK
+local mt = getrawmetatable(game)
+local ncallsa = mt.__namecall
+	setreadonly(mt, false)
+	mt.__namecall = newcclosure(function(...)
+		local args = {...}
+		if not checkcaller() and getnamecallmethod() == "Kick" then
+			return nil
+		end
+		return ncallsa(...)
+	end)
+	setreadonly(mt, true)
+--//
+	
+--// ANTI-BAN
+	local mmt = getrawmetatable(game)
+
+local oldnamecall = mmt.__namecall
+
+setreadonly(mmt, false)
+
+mmt.__namecall = newcclosure(function(self, ...)
+   local method = tostring(getnamecallmethod())
+   local Args = {...}
+   if not checkcaller() and method == "FireServer" and tostring(self) == "Banned" then
+       return nil
+   end
+   
+   return oldnamecall(self, ...)
+end)
+
+setreadonly(mmt, true)
+	
+	local gmt = getrawmetatable(game);
+setreadonly(gmt, false);
+local old_index = gmt.__index;
+gmt.__index = function(a, b)
+    if tostring(a) == "BannedA" or tostring(a) == "BannedB" or tostring(a) == "BannedC" or tostring(a) == "BannedD" then
+        if tostring(b) == "Value" then
+            return false;
+        end
+    end
+    return old_index(a, b);
+end
+
+local bgmt = getrawmetatable(game);
+setreadonly(bgmt, false);
+local bold_index = bgmt.__index;
+bgmt.__index = function(a, b)
+    if tostring(a) == "BCount" then
+        if tostring(b) == "Value" then
+            return 0;
+        end
+    end
+    return bold_index(a, b);
+end
+
+for i,BN in pairs(game:GetService("Workspace").FE.Settings:GetChildren()) do
+    if BN.Name == "BName" then
+    BN:Destroy()
+end
+end
+--//
+
+--// ANTI-WALKSPEED AND ANTI-JUMPPOWER
+for i,b in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if b.Name == " " then
+    b:Destroy()
+end
+end
+
+for i,lc2 in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if lc2:IsA("LocalScript") and string.match(lc2.Name, "1") or string.match(lc2.Name, "2") or string.match(lc2.Name, "3") or string.match(lc2.Name, "4") or string.match(lc2.Name, "5") or string.match(lc2.Name, "6") or string.match(lc2.Name, "7") or string.match(lc2.Name, "8") or string.match(lc2.Name, "9") then
+       lc2:Destroy()
+    end
+end
+
+for i,lc in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+    if lc:IsA("LocalScript") and string.match(lc.Name, "1") or string.match(lc.Name, "2") or string.match(lc.Name, "3") or string.match(lc.Name, "4") or string.match(lc.Name, "5") or string.match(lc.Name, "6") or string.match(lc.Name, "7") or string.match(lc.Name, "8") or string.match(lc.Name, "9") then
+       lc:Destroy()
+    end
+end
+
+for i,c in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+    if c.Name == "CheckPlayerW" then
+    c:Destroy()
+end
+end
+
+for i,z in pairs(game.StarterGui.Start:GetChildren()) do
+    if z.Name == "CheckPlayerW" then
+    z:Destroy()
+end
+end
+
+for _, v in pairs(game.StarterPlayer.StarterCharacterScripts:GetDescendants()) do
+if v.Name == " " then
+v:Destroy()
+end
+end
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+wait(0.5)
+for i,char in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if char.Name == " " then
+       char:Destroy()
+    end
+    end
+end)
+--//
+
+--// ANTI-LAG (REMOVES LAG FROM GUI)
+for i,nolag in pairs(game.StarterGui.Start:GetChildren()) do
+if nolag.Name == "Gradient" then
+nolag:Destroy()
+end
+end
+for i,nolaglp in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+if nolaglp.Name == "Gradient" then
+nolaglp:Destroy()
+end
+end
+--//
+
+--// FUNCTIONS, VARIABLES AND SCRIPTS //--
+function GetPlayer(String)
+	local Foundplr = {}
+	local strl = String:lower()
+	if strl == "all" then
+		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			table.insert(Foundplr,v)
+		end
+	elseif strl == "others" then
+		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v.Name ~= game.Players.LocalPlayer.Name then
+				table.insert(Foundplr,v)
+			end
+		end
+	elseif strl == "me" then
+		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v.Name == game.Players.LocalPlayer.Name then
+				table.insert(Foundplr,v)
+			end
+		end
+	else
+		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v.DisplayName:lower():sub(1, #String) == String:lower() or v.Name:lower():sub(1, #String) == String:lower() then
+				table.insert(Foundplr,v)
+			end
+		end
+	end
+	return Foundplr
+end
+
+local RS
+local LeftLeg
+local RightLeg
+local LeftFoot
+local RightFoot
+local Distance = 0
+local DistanceTackle = 0
+local DistanceReach = 0
+local DistancePass = 0
+local DistanceWalk = 0
+local DistanceSide = 0
+local DistanceJump = 0
+local SaveDelay = 0
+local Heartbeat
+local HumanoidDied
+local TouchedBallLoop
+local RunStepped2
+local RunStepBall
+local AddBallA
+local TouchedGKBallBox
+
+local Player = game.Players.LocalPlayer
+local RootPart = Player.Character.HumanoidRootPart
+
+
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("سكربت عربي tps street soccer ", "Midnight")
+local Tab = Window:NewTab("Goal Keeper - حارس")
+
+local Section = Tab:NewSection("هاك الحارس")
+
+
+Section:NewToggle("تقدر تصد وين ماتبي", "ToggleInfo", function(arg)
+if arg then
+for i,v in pairs(game.Workspace.GKSystem:GetChildren()) do
+    if v.Name == "Fix" then
+       v.CanTouch = false
+    end
+end
+    else
+        for i,v in pairs(game.Workspace.GKSystem:GetChildren()) do
+    if v.Name == "Fix" then
+       v.CanTouch = true
+    end
+end
+end
+end)
+
+
+Section:NewToggle("يصد وحده - auto save", "ToggleInfo", function(arg)
+if arg then
+TouchedGKBallBox = game.Workspace.TPSSystem.TPS.Touched:Connect(function(HRP)
+    if HRP == game.Players.LocalPlayer.Character.HumanoidRootPart then
+        for i,v in pairs(game.Workspace:GetDescendants()) do
+    if v.Name == "TPS" and v:IsA("Part") then
+    if game.Players.LocalPlayer.Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+    AnimationId = "304581045"
+local Anim = Instance.new("Animation")
+Anim.AnimationId = "rbxassetid://"..AnimationId
+local k = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+k:Play()
+wait(SaveDelay)
+
+local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game.Players.LocalPlayer.Character["Right Leg"]
+local Event = game:GetService("Workspace").FE.Actions.SaveRL
+Event:FireServer(A_1, A_2)
+
+local Events2 = game:GetService("Workspace").FE.Kick.RemoteEvent2
+Events2:FireServer()
+else
+AnimationId = "3008336125"
+local Anim = Instance.new("Animation")
+Anim.AnimationId = "rbxassetid://"..AnimationId
+local k = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+k:Play()
+wait(SaveDelay)
+
+local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+local Event = game:GetService("Workspace").FE.Actions.SaveT
+Event:FireServer(A_1, A_2)
+
+local Events3 = game:GetService("Workspace").FE.Kick.RemoteEvent2
+Events3:FireServer()
+end
+end
+end
+end
+end)
+    else
+TouchedGKBallBox:Disconnect()
+end
+end)
+
+Section:NewToggle("يصد وحده - auto save", "ToggleInfo", function(arg)
+if arg then
+_G.GKS = true
+    while _G.GKS do
+    wait()
+       for i,v in pairs(game.Workspace:GetDescendants()) do
+    if v.Name == "TPS" and v:IsA("Part") then
+    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude <= Distance then
+    if game.Players.LocalPlayer.Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+    AnimationId = "304581045"
+local Anim = Instance.new("Animation")
+Anim.AnimationId = "rbxassetid://"..AnimationId
+local k = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+k:Play()
+wait(SaveDelay)
+
+local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game.Players.LocalPlayer.Character["Right Leg"]
+local Event = game:GetService("Workspace").FE.Actions.SaveRL
+Event:FireServer(A_1, A_2)
+
+local Events2 = game:GetService("Workspace").FE.Kick.RemoteEvent2
+Events2:FireServer()
+else
+AnimationId = "3008336125"
+local Anim = Instance.new("Animation")
+Anim.AnimationId = "rbxassetid://"..AnimationId
+local k = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+k:Play()
+wait(SaveDelay)
+
+local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+local Event = game:GetService("Workspace").FE.Actions.SaveT
+Event:FireServer(A_1, A_2)
+
+local Events3 = game:GetService("Workspace").FE.Kick.RemoteEvent2
+Events3:FireServer()
+end
+end
+end
+end
+end
+    else
+if _G.GKS == true then
+_G.GKS = false
+else
+_G.GKS = true
+end
+end
+end)
+
+local Tab = Window:NewTab("تجميع")
+
+local Section2 = Tab:NewSection("تجميع للفل او BADGES")
+
+Section2:NewToggle("كل عشر ثواني 5 اهداف", "ToggleInfo", function(arg)
+if arg then
+_G.AUTOFARM = true
+while _G.AUTOFARM do
+wait()
+local HRPRotation = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Rotation
+local GoalPST = game.Workspace.TPSSystem.TPS.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = HRPRotation + GoalPST.Position
+    local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game:GetService("Players").LocalPlayer.Character.Head
+local Event = game:GetService("Workspace").FE.Actions.Tackle
+Event:FireServer(A_1, A_2)
+
+local Events2 = game:GetService("Workspace").FE.Kick.RemoteEvent2
+Events2:FireServer()
+if game.Players.LocalPlayer.TeamColor == BrickColor.new("Bright red") then
+game.Players.LocalPlayer.PlayerGui.LockScript.SetLock.Value = true
+game.Workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Workspace.CurrentCamera.CFrame.Position + Vector3.new(0, 45, 0),game.Workspace.BlueGoal.Part.Position)
+end
+if game.Players.LocalPlayer.TeamColor == BrickColor.new("Bright blue") then
+game.Players.LocalPlayer.PlayerGui.LockScript.SetLock.Value = true
+game.Workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Workspace.CurrentCamera.CFrame.Position + Vector3.new(0, 45, 0),game.Workspace.RedGoal.Part.Position)
+end
+end
+    else
+_G.AUTOFARM = false
+wait(1)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Lines.Line12.CFrame
+game.Players.LocalPlayer.PlayerGui.LockScript.SetLock.Value = false
+end
+end)
+
+Section2:NewToggle("دايما ينضر للقول [BodyGyro]", "ToggleInfo", function(arg)
+if arg then
+local Offset = CFrame.new(4, 0, 0)
+
+local BGyro = Instance.new("BodyGyro", game.Players.LocalPlayer.Character.HumanoidRootPart)
+BGyro.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+BGyro.P = 99999
+BGyro.D = 500
+    _G.GOAL = true
+    while _G.GOAL do
+    wait()
+       if game.Players.LocalPlayer.TeamColor == BrickColor.new("Bright red") then
+local BLUE = game.Workspace.BlueGoal.Part
+local Direction = ((BLUE.CFrame * Offset).p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * Vector3.new(1, 0, 1)
+BGyro.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Direction)
+else
+local RED = game.Workspace.RedGoal.Part
+local Direction = ((RED.CFrame * Offset).p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * Vector3.new(1, 0, 1)
+BGyro.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Direction)
+end
+end
+    else
+    _G.GOAL = false
+    for i,v in pairs(game.Players.LocalPlayer.Character.HumanoidRootPart:GetChildren()) do
+    if v.Name == "BodyGyro" then
+    v:Destroy()
+    end
+    end
+end
+end)
+
+Section2:NewToggle("يشوت عالي دايما", "ToggleInfo", function(arg)
+if arg then
+_G.AUTOPOWER = true
+while _G.AUTOPOWER do
+wait()
+    if game.Players.LocalPlayer.TeamColor == BrickColor.new("Bright blue") then
+        if (game.Workspace.TPSSystem.TPS.Position - game.Workspace.TPSSystem.Part1.Position).Magnitude <= 90 then
+        game.Players.LocalPlayer.Backpack.Speed.Value = 65
+        game.Players.LocalPlayer.Backpack.Angle.Value = Vector3.new(4000000, 1000, 4000000)
+        elseif (game.Workspace.TPSSystem.TPS.Position - game.Workspace.TPSSystem.Part1.Position).Magnitude > 99 then
+        game.Players.LocalPlayer.Backpack.Speed.Value = 65
+        game.Players.LocalPlayer.Backpack.Angle.Value = Vector3.new(4000000, 1100, 4000000)
+    end
+end
+if game.Players.LocalPlayer.TeamColor == BrickColor.new("Bright red") then
+        if (game.Workspace.TPSSystem.TPS.Position - game.Workspace.TPSSystem.Part2.Position).Magnitude <= 99 then
+        game.Players.LocalPlayer.Backpack.Speed.Value = 65
+        game.Players.LocalPlayer.Backpack.Angle.Value = Vector3.new(4000000, 1000, 4000000)
+        elseif (game.Workspace.TPSSystem.TPS.Position - game.Workspace.TPSSystem.Part2.Position).Magnitude > 100 then
+        game.Players.LocalPlayer.Backpack.Speed.Value = 65
+        game.Players.LocalPlayer.Backpack.Angle.Value = Vector3.new(4000000, 1100, 4000000)
+    end
+end
+end
+    else
+        _G.AUTOPOWER = false
+end
+end)
+
+Section2:NewToggle("دايما ينضر لصاحبك", "ToggleInfo", function(arg)
+if arg then
+_G.LookAAA = true
+while _G.LookAAA do
+wait()
+for i,v in pairs(game.Players:GetPlayers()) do
+                  if v.Name ~= game.Players.LocalPlayer.Character.Name and  (v.Character.Head.CFrame.p - game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.p).Magnitude < DistancePass and Player.TeamColor == v.TeamColor then
+game.Players.LocalPlayer.PlayerGui.LockScript.SetLock.Value = true
+game.Workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Workspace.CurrentCamera.CFrame.Position + Vector3.new(0, 45, 0),v.Character.HumanoidRootPart.Position)
+end
+end
+end
+    else
+    _G.LookAAA = false
+    wait(0.5)
+    game.Players.LocalPlayer.PlayerGui.LockScript.SetLock.Value = false
+end
+end)
+
+
+local Tab = Window:NewTab("وسط السكربت")
+
+local Section3 = Tab:NewSection("سكربتات اخري")
+
+Section3:NewButton("خش السيرفر مره ثانيه", "ButtonInfo", function()
+    local plr = game.Players.LocalPlayer
+end)
+
+local Tab = Window:NewTab("ريتش")
+
+local Section4 = Tab:NewSection("يشوت من بعيد")
+
+Section4:NewLabel("Reach - يشوت من بعيد")
+
+Section4:NewToggle("تفعيل للريتش", "ToggleInfo", function(arg)
+if arg then
+RunStepped = game:GetService("RunService").RenderStepped:Connect(function()
+if game.Players.LocalPlayer.Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - game.Workspace.TPSSystem.TPS.Position).Magnitude <= DistanceReach then
+if game.Lighting[game.Players.LocalPlayer.Name].PreferredFoot.Value == 1 then
+firetouchinterest(game.Players.LocalPlayer.Character["Right Leg"], game.Workspace.TPSSystem.TPS, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["Right Leg"], game.Workspace.TPSSystem.TPS, 1)
+elseif game.Lighting[game.Players.LocalPlayer.Name].PreferredFoot.Value == 2 then
+firetouchinterest(game.Players.LocalPlayer.Character["Left Leg"], game.Workspace.TPSSystem.TPS, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["Left Leg"], game.Workspace.TPSSystem.TPS, 1)
+
+end
+end
+end
+if game.Players.LocalPlayer.Character.Humanoid.RigType == Enum.HumanoidRigType.R15 then
+if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - game.Workspace.TPSSystem.TPS.Position).Magnitude <= DistanceReach then
+if game.Lighting[game.Players.LocalPlayer.Name].PreferredFoot.Value == 1 then
+firetouchinterest(game.Players.LocalPlayer.Character["RightLowerLeg"], game.Workspace.TPSSystem.TPS, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["RightLowerLeg"], game.Workspace.TPSSystem.TPS, 1)
+elseif game.Lighting[game.Players.LocalPlayer.Name].PreferredFoot.Value == 2 then
+firetouchinterest(game.Players.LocalPlayer.Character["LeftLowerLeg"], game.Workspace.TPSSystem.TPS, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["LeftLowerLeg"], game.Workspace.TPSSystem.TPS, 1)
+			end
+			end
+			end
+end)
+else
+RunStepped:Disconnect()
+end
+end)
+
+Section4:NewSlider("كبر الريتش", "SliderInfo", 100, 0, function(arg) -- 100 (MaxValue) | 0 (MinValue)
+   DistanceReach = arg
+end)
+
+local Tab = Window:NewTab("لفل")
+
+local Section5 = Tab:NewSection("لفل")
+
+Section5:NewLabel("لفل يبان للجميع")
+
+Section5:NewLabel("اضغط على الالزر عشان يتفعل السكربت")
+
+
+Section5:NewButton("سكربت اللفل", "اضغط هنا", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/POtatoScriPr/scriptArabicLOLlevelBYmeLOLWTIMEW/main/SCRIPT%20LEVEL'))()
+end)
+
+local Tab = Window:NewTab("المشترايات")
+
+local Section6 = Tab:NewSection("دبل لف و نار زرقه وكثير اشياء")
+
+Section6:NewToggle("لازم تفعل هذا الزر", "ToggleInfo", function()
+    local mt = getrawmetatable(game);
+setreadonly(mt, false);
+local old_index = mt.__index;
+mt.__index = function(a, b)
+    if tostring(a) == "GamePassController" or tostring(a) == "GamePassControllerFix" or tostring(a) == "GamePassC" then
+        if tostring(b) == "Enabled" then
+            return true;
+            elseif tostring(b) == "Disabled" then
+            return false;
+        end
+    end
+    return old_index(a, b);
+end
+
+wait(.5)
+game:GetService("Workspace").FE.Store.Check:FireServer()
+end)
+
+
+Section6:NewToggle("النار الزرقه", "ToggleInfo", function(arg)
+if arg then
+game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.Tick.Visible = true
+    game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.BlueFlame.Style = "RobloxRoundButton"
+        game:GetService("Players").LocalPlayer.PlayerGui.Start.PowerShot.Image = "rbxassetid://5366457711"
+        game:GetService("Players").LocalPlayer.Backpack.FValue.Value = 2
+    else
+        game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.Tick.Visible = false
+    game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.BlueFlame.Style = "RobloxRoundDefaultButton"
+        game:GetService("Players").LocalPlayer.PlayerGui.Start.PowerShot.Image = "rbxassetid://1595877615"
+       game:GetService("Players").LocalPlayer.Backpack.FValue.Value = 1
+    end
+end)
+
+local AnimationCurveLoop
+
+Section6:NewToggle("دبل لف", "ToggleInfo", function(arg)
+if arg then
+game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.WoodenFloor.Tick.Visible = true
+    game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.WoodenFloor.WoodenFloor.Style = "RobloxRoundButton"
+
+local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+
+AnimationCurveLoop = Humanoid.AnimationPlayed:Connect(function(AnimationTrack)
+    if AnimationTrack.Name == "OldMKickL" or AnimationTrack.Name == "OldMKick" or AnimationTrack.Name == "OldLKickL" or AnimationTrack.Name == "OldLKick" or AnimationTrack.Name == "MKickL" or AnimationTrack.Name == "MKick" or AnimationTrack.Name == "LKickL" or AnimationTrack.Name == "LKick" or AnimationTrack.Name == "OldDribbleL" or AnimationTrack.Name == "OldDribble" or AnimationTrack.Name == "DribbleL" or AnimationTrack.Name == "Dribble" then
+    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - game.Workspace.TPSSystem.TPS.Position).Magnitude < 3.45 then
+        if game.Players.LocalPlayer.Backpack.Curving.Value == 2 then
+        wait(0.1)
+                local A_1T = game:GetService("Workspace").TPSSystem.TPS
+local A_2T = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+local EventT = game:GetService("Workspace").FE.Actions.KickC1
+EventT:FireServer(A_1T, A_2T)
+wait(0.2)
+EventT:FireServer(A_1T, A_2T)
+
+elseif game.Players.LocalPlayer.Backpack.Curving.Value == 1 then
+wait(0.1)
+local A_1 = game:GetService("Workspace").TPSSystem.TPS
+local A_2 = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+local Event = game:GetService("Workspace").FE.Actions.KickC2
+Event:FireServer(A_1, A_2)
+wait(0.2)
+Event:FireServer(A_1, A_2)
+
+            end
+        end
+    end
+end)
+    else
+        AnimationCurveLoop:Disconnect()
+        game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.WoodenFloor.Tick.Visible = false
+    game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.WoodenFloor.WoodenFloor.Style = "RobloxRoundDefaultButton"
+    end
+end)
+
+
+local Tab = Window:NewTab("Esp")
+
+local Section7 = Tab:NewSection("يسوي تحديد للكوره ولللاعبين")
+
+
+Section7:NewToggle("Esp للكوره", "ToggleInfo", function(arg)
+if arg then
+local Highlight = Instance.new("Highlight", game.Workspace.TPSSystem.TPS)
+Highlight.FillColor = Color3.fromRGB(255, 255, 255)
+Highlight.FillTransparency = 0.2
+Highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
+    else
+game.Workspace.TPSSystem.TPS.Highlight:Destroy()
+end
+end)
+
+ local ESPz = loadstring(game:HttpGet("https://paste.ee/r/aFx08", true))()
+
+Section7:NewToggle("Esp لللاعبين", "ToggleInfo", function(arg)
+ESPz:Toggle(arg)
+end)
+
+local Tab = Window:NewTab("الصناع والناشرين")
+
+local Section7 = Tab:NewSection("الصناع والناشرين")
+
+Section7:NewLabel("MADE BY LOLwTIMEw")
+Section7:NewLabel("هذا السكربت صنع من  LOLwTIMEw")
+Section7:NewLabel("الناشر F5 YASSER")
+
+
+
+
+
+
